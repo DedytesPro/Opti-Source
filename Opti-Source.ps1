@@ -119,13 +119,13 @@ function Invoke-DeepSystemCleaning {
     $ok = $true
 
     try {
-        # 1. Corbeille (Utilisation de single quotes pour eviter le bug iex)
+        # 1. Corbeille
         Clear-RecycleBin -Force -ErrorAction SilentlyContinue
         Get-ChildItem -Path 'C:\$Recycle.Bin' -Force -ErrorAction SilentlyContinue | Remove-Item -Recurse -Force -ErrorAction SilentlyContinue
 
         $targetProfile = Get-TargetProfilePath
         
-        # 2. Telechargements (Avec joker pour eviter le bug d'encodage du 'e' accentue)
+        # 2. Telechargements
         if ($IncludeDownloads) {
             $downPathEN = "$targetProfile\Downloads"
             if (Test-Path $downPathEN) { Remove-Item "$downPathEN\*" -Recurse -Force -ErrorAction SilentlyContinue }
@@ -210,19 +210,6 @@ function Run-ModeCours {
                     } catch { Write-Warning "  -> Echec creation raccourci : $($app.Name)" }
                 } 
             }
-            
-            # --- AJOUT DU RACCOURCI OPTI-SOURCE ---
-            try {
-                $optiLnk = $wshShell.CreateShortcut("$desktopPath\Opti-Source.lnk")
-                $optiLnk.TargetPath = "powershell.exe"
-                # Paramètres complexes gérés avec des guillemets simples pour éviter les bugs d'échappement
-                $optiLnk.Arguments = '-NoProfile -WindowStyle Hidden -Command "Start-Process powershell -Verb RunAs -ArgumentList ''-NoProfile -ExecutionPolicy Bypass -WindowStyle Normal -Command \"irm https://raw.githubusercontent.com/DedytesPro/Opti-Source/refs/heads/main/Opti-Source.ps1 | iex\"''"'
-                $optiLnk.IconLocation = "powershell.exe,0"
-                $optiLnk.Save()
-                Start-Sleep -Milliseconds 250
-            } catch { Write-Warning "  -> Echec creation raccourci : Opti-Source" }
-            # --------------------------------------
-
             return $true
         } catch {
             Write-Warning "  -> Exception Bureau : $_"
@@ -269,18 +256,6 @@ function Run-ModeValidation {
                     } catch { Write-Warning "  -> Echec creation raccourci : $($app.Name)" }
                 } 
             }
-
-            # --- AJOUT DU RACCOURCI OPTI-SOURCE ---
-            try {
-                $optiLnk = $wshShell.CreateShortcut("$desktopPath\Opti-Source.lnk")
-                $optiLnk.TargetPath = "powershell.exe"
-                $optiLnk.Arguments = '-NoProfile -WindowStyle Hidden -Command "Start-Process powershell -Verb RunAs -ArgumentList ''-NoProfile -ExecutionPolicy Bypass -WindowStyle Normal -Command \"irm https://raw.githubusercontent.com/DedytesPro/Opti-Source/refs/heads/main/Opti-Source.ps1 | iex\"''"'
-                $optiLnk.IconLocation = "powershell.exe,0"
-                $optiLnk.Save()
-                Start-Sleep -Milliseconds 250
-            } catch { Write-Warning "  -> Echec creation raccourci : Opti-Source" }
-            # --------------------------------------
-
             return $true
         } catch {
             Write-Warning "  -> Exception Bureau : $_"
@@ -530,12 +505,12 @@ function Show-Informations {
     Write-Host "1. PC Cours :" -ForegroundColor Green
     Write-Host "   - Nettoyage complet du systeme (Telechargements, Cache divers, Corbeille)."
     Write-Host "   - Nettoyage des navigateurs en conservant les preferences."
-    Write-Host "   - Remet les raccourcis bureau (+ Opti-Source executable)."
+    Write-Host "   - Remet les raccourcis bureau (Edge, Chrome, Word, Excel, PowerPoint, ClickShare)."
     Write-Host ""
     Write-Host "2. PC Validation :" -ForegroundColor Yellow
     Write-Host "   - Nettoyage complet du systeme."
     Write-Host "   - Nettoyage des navigateurs (Historique, cache, sessions, mdp)."
-    Write-Host "   - Remet des raccourcis bureau restreints (+ Opti-Source executable)."
+    Write-Host "   - Remet des raccourcis bureau restreints."
     Write-Host "   - Configure Moodle pour s'ouvrir au demarrage."
     Write-Host ""
     Write-Host "3. PC Nouveau collaborateur :" -ForegroundColor Magenta
