@@ -531,7 +531,7 @@ while ($menuOpen) {
     Write-Host "==================================================" -ForegroundColor Cyan
     Write-Host "                   OPTI-SOURCE                    " -ForegroundColor White -BackgroundColor Blue
     Write-Host "==================================================" -ForegroundColor Cyan
-    Write-Host " Version : 1.0" -ForegroundColor DarkGray
+    Write-Host " Version : 1.12" -ForegroundColor DarkGray
     Write-Host " Auteur  : Dylan Martins Fernandes" -ForegroundColor DarkGray
     Write-Host " Date    : $(Get-Date -Format 'dd.MM.yyyy HH:mm')" -ForegroundColor DarkGray
     Write-Host "--------------------------------------------------" -ForegroundColor Cyan
@@ -601,3 +601,4 @@ while ($menuOpen) {
         }
     }
 }
+
